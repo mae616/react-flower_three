@@ -1,12 +1,13 @@
 import { useEffect, useRef } from "react";
 import { MakeScene } from "../classes/MakeScene";
+import { Flower } from "../classes/Flower";
 import {
   WebGLRenderer,
   // Scene,
   PerspectiveCamera,
-  BoxGeometry,
-  MeshStandardMaterial,
-  Mesh,
+  // BoxGeometry,
+  // MeshStandardMaterial,
+  // Mesh,
   DirectionalLight,
   AmbientLight,
   // Color,
@@ -30,19 +31,21 @@ function DrawCanvas(): JSX.Element {
     const camera = new PerspectiveCamera(45, 800 / 600, 1, 10000);
     camera.position.set(0, 0, 1000);
 
-    // 箱を作成
-    const geometry = new BoxGeometry(250, 250, 250);
-    const material = new MeshStandardMaterial({ color: 0xff0000 });
-    const box = new Mesh(geometry, material);
-    box.position.z = -5;
-    scene.add(box);
+    const flower = new Flower();
+    scene.add(flower);
+    // // 箱を作成
+    // const geometry = new BoxGeometry(250, 250, 250);
+    // const material = new MeshStandardMaterial({ color: 0xff0000 });
+    // const box = new Mesh(geometry, material);
+    // box.position.z = -5;
+    // scene.add(box);
 
-    // 床を作成
-    const meshFloor = new Mesh(
-      new BoxGeometry(260, 0.2, 260),
-      new MeshStandardMaterial({ color: 0x808080, roughness: 0.0 })
-    );
-    scene.add(meshFloor);
+    // // 床を作成
+    // const meshFloor = new Mesh(
+    //   new BoxGeometry(260, 0.2, 260),
+    //   new MeshStandardMaterial({ color: 0x808080, roughness: 0.0 })
+    // );
+    // scene.add(meshFloor);
 
     // 環境光源を作成
     const ambientLight = new AmbientLight(0x404040, 2);
@@ -56,8 +59,8 @@ function DrawCanvas(): JSX.Element {
     const tick = (): void => {
       requestAnimationFrame(tick);
 
-      box.rotation.x += 0.01;
-      box.rotation.y += 0.01;
+      // box.rotation.x += 0.01;
+      // box.rotation.y += 0.01;
 
       // 描画
       renderer.render(scene, camera);
