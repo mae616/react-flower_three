@@ -13,6 +13,8 @@ import {
   // Color,
 } from "three";
 
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+
 function DrawCanvas(): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -30,6 +32,10 @@ function DrawCanvas(): JSX.Element {
     // カメラを作成
     const camera = new PerspectiveCamera(45, 800 / 600, 1, 10000);
     camera.position.set(0, 0, 1000);
+
+    // カメラコントローラーを作成
+    const controls = new OrbitControls(camera, castedCanvasElement);
+    controls.update();
 
     const flower = new Flower();
     scene.add(flower);
