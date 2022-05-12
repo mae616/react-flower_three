@@ -1,4 +1,5 @@
-import { Scene, AmbientLight, DirectionalLight } from "three";
+import { Scene, AmbientLight, DirectionalLight, RectAreaLight } from "three";
+import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper.js";
 
 export class MakeLight {
   scene: Scene;
@@ -16,6 +17,17 @@ export class MakeLight {
     // 平行光源を生成
     const light = new DirectionalLight(0xffffff);
     light.position.set(1, 1, 1);
+    this.scene.add(light);
+  }
+
+  // 滲み
+  setBleeding() {
+    // 平行光源を生成
+    const light = new RectAreaLight(0xff00ff, 5.0, 15, 15);
+    light.position.set(-40, 105, 100);
+    light.rotation.x = 160;
+    const helper = new RectAreaLightHelper(light);
+    light.add(helper);
     this.scene.add(light);
   }
 }

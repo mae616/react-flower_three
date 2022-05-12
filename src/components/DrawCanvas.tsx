@@ -36,6 +36,7 @@ function DrawCanvas(): JSX.Element {
     const light = new MakeLight(scene);
     light.setAmbientLight();
     light.setDirectionalLight();
+    light.setBleeding();
 
     const tick = (): void => {
       requestAnimationFrame(tick);
