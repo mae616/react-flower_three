@@ -5,9 +5,9 @@ import {
   WebGLRenderer,
   // Scene,
   PerspectiveCamera,
-  // BoxGeometry,
-  // MeshStandardMaterial,
-  // Mesh,
+  BoxGeometry,
+  MeshStandardMaterial,
+  Mesh,
   DirectionalLight,
   AmbientLight,
   // Color,
@@ -31,7 +31,7 @@ function DrawCanvas(): JSX.Element {
 
     // カメラを作成
     const camera = new PerspectiveCamera(45, 800 / 600, 1, 10000);
-    camera.position.set(0, 0, 1000);
+    camera.position.set(0, 0, 600);
 
     // カメラコントローラーを作成
     const controls = new OrbitControls(camera, castedCanvasElement);
@@ -39,19 +39,14 @@ function DrawCanvas(): JSX.Element {
 
     const flower = new Flower();
     scene.add(flower);
-    // // 箱を作成
-    // const geometry = new BoxGeometry(250, 250, 250);
-    // const material = new MeshStandardMaterial({ color: 0xff0000 });
-    // const box = new Mesh(geometry, material);
-    // box.position.z = -5;
-    // scene.add(box);
 
-    // // 床を作成
-    // const meshFloor = new Mesh(
-    //   new BoxGeometry(260, 0.2, 260),
-    //   new MeshStandardMaterial({ color: 0x808080, roughness: 0.0 })
-    // );
-    // scene.add(meshFloor);
+    // 床を作成
+    const meshFloor = new Mesh(
+      new BoxGeometry(260, 1, 260),
+      new MeshStandardMaterial({ color: 0xff8080, roughness: 0.0 })
+    );
+    meshFloor.position.set(0, -130, 0);
+    scene.add(meshFloor);
 
     // 環境光源を作成
     const ambientLight = new AmbientLight(0x404040, 2);
