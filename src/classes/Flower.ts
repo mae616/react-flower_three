@@ -15,14 +15,16 @@ export class Flower extends Object3D {
   // flower: Object3D;
   constructor() {
     super();
-    const petalGroup = new Petals();
-    this.add(petalGroup);
+    const petals = new Petals();
+    this.add(petals);
+    petals.rotation.y = -0.5;
 
     const stem = new Stem();
     stem.position.y = -5;
     this.add(stem);
 
     this.makeLeaf();
+    this.rotation.x = 0.4;
   }
 
   private makeLeaf() {
@@ -53,9 +55,8 @@ class Petals extends Group {
   constructor() {
     super();
 
-    const length = 8;
+    const length = 6;
     for (let i = 0; i < length; i++) {
-      // 直方体を作成
       const petal = new Petal();
 
       // 配置座標を計算
@@ -91,13 +92,6 @@ class Petal extends Mesh {
 class Stem extends Mesh {
   // petal: Mesh;
   constructor() {
-    // // 箱を作成
-
-    // const box = new Mesh(geometry, material);
-
-    // scene.add(box);
-
-    // const geometry = new BoxGeometry(50, 250, 50);
     const geometry = new CylinderGeometry(10, 10, 250, 50);
 
     const material = new MeshStandardMaterial({ color: 0x017a0f });
@@ -110,12 +104,6 @@ class Stem extends Mesh {
 class Leaf extends Mesh {
   // petal: Mesh;
   constructor() {
-    // // 箱を作成
-
-    // const box = new Mesh(geometry, material);
-
-    // scene.add(box);
-
     const geometry = new BoxGeometry(30, 180, 30);
 
     const material = new MeshStandardMaterial({ color: 0x02520b });

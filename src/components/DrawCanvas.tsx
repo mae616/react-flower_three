@@ -1,19 +1,9 @@
 import { useEffect, useRef } from "react";
 import { MakeScene } from "../classes/MakeScene";
+import { MakeLight } from "../classes/MakeLight";
+import { MakeCamera } from "../classes/MakeCamera";
 import { Flower } from "../classes/Flower";
-import {
-  WebGLRenderer,
-  // Scene,
-  PerspectiveCamera,
-  BoxGeometry,
-  MeshStandardMaterial,
-  Mesh,
-  DirectionalLight,
-  AmbientLight,
-  // Color,
-} from "three";
-
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { WebGLRenderer } from "three";
 
 function DrawCanvas(): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -30,32 +20,22 @@ function DrawCanvas(): JSX.Element {
     const scene = new MakeScene().get();
 
     // カメラを作成
-    const camera = new PerspectiveCamera(45, 800 / 600, 1, 10000);
-    camera.position.set(0, 0, 600);
-
-    // カメラコントローラーを作成
-    const controls = new OrbitControls(camera, castedCanvasElement);
-    controls.update();
+    const camera = new MakeCamera(castedCanvasElement).get();
 
     const flower = new Flower();
     scene.add(flower);
 
     // 床を作成
-    const meshFloor = new Mesh(
-      new BoxGeometry(260, 1, 260),
-      new MeshStandardMaterial({ color: 0xff8080, roughness: 0.0 })
-    );
-    meshFloor.position.set(0, -130, 0);
-    scene.add(meshFloor);
+    // const meshFloor = new Mesh(
+    //   new BoxGeometry(260, 1, 260),
+    //   new MeshStandardMaterial({ color: 0xff8080, roughness: 0.0 })
+    // );
+    // meshFloor.position.set(0, -130, 0);
+    // scene.add(meshFloor);
 
-    // 環境光源を作成
-    const ambientLight = new AmbientLight(0x404040, 2);
-    scene.add(ambientLight);
-
-    // 平行光源を生成
-    const light = new DirectionalLight(0xffffff);
-    light.position.set(1, 1, 1);
-    scene.add(light);
+    const light = new MakeLight(scene);
+    light.setAmbientLight();
+    light.setDirectionalLight();
 
     const tick = (): void => {
       requestAnimationFrame(tick);
