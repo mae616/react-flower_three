@@ -10,11 +10,13 @@ import {
   MeshStandardMaterial,
   Group,
   Vector2,
+  Vector3,
   LatheGeometry,
   DoubleSide,
   MeshBasicMaterial,
 } from "three";
 
+import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js";
 import { createMultiMaterialObject } from "three/examples/jsm/utils/SceneUtils.js";
 
 export class Flower extends Object3D {
@@ -42,12 +44,12 @@ export class Flower extends Object3D {
       // 配置座標を計算
       const radian = (i / length) * Math.PI * 2;
       leaf.position.set(
-        40 * Math.cos(radian), // X座標
+        60 * Math.cos(radian), // X座標
         -45, // Y座標
-        20 * Math.sin(radian) // Z座標
+        60 * Math.sin(radian) // Z座標
       );
-      leaf.rotation.z += 0.5 * -Math.cos(radian); // x軸方向に回転
-
+      leaf.rotation.y = -radian;
+      leaf.rotation.z += -0.5;
       // グループに追加する
       this.add(leaf);
     }
@@ -68,13 +70,13 @@ class Petals extends Group {
       // 配置座標を計算
       const radian = (i / length) * Math.PI * 2;
       petal.position.set(
-        0.001 * Math.cos(radian), // X座標
+        0, // X座標
         100, // Y座標
-        0.001 * Math.sin(radian) // Z座標
+        0 // Z座標
       );
 
       petal.rotation.y = -radian;
-      petal.rotation.z += 1 / length - Math.cos((1 / length) * Math.PI * 2); // x軸方向に回転
+      petal.rotation.z += -0.3;
 
       // グループに追加する
       this.add(petal);
@@ -157,11 +159,54 @@ class Stem extends Mesh {
 class Leaf extends Mesh {
   // petal: Mesh;
   constructor() {
-    const geometry = new BoxGeometry(30, 180, 30);
+    super();
 
-    const material = new MeshStandardMaterial({ color: 0x02520b });
+    var height = 5;
+    var count = 30;
 
-    // 継承元のコンストラクターを実行
-    super(geometry, material);
+    var points = [
+      new Vector3(0, -100, 0),
+      new Vector3(-10, -70, -15),
+      new Vector3(-10, -70, 15),
+      new Vector3(20, 130, 0),
+    ];
+
+    var spGroup = new Group();
+    var material = new MeshBasicMaterial({
+      color: 0x02520b,
+      transparent: false,
+    });
+    points.forEach(function (point) {
+      var spGeom = new SphereGeometry(0.2);
+      var spMesh = new Mesh(spGeom, material);
+      spMesh.position.set(point.x, point.y, 0);
+      spGroup.add(spMesh);
+    });
+    this.add(spGroup);
+
+    // add the points as a group to the scene
+
+    var hullGeometry = new ConvexGeometry(points);
+    var meshMaterial = new MeshBasicMaterial({
+      color: 0x02520b,
+      // transparent: true,
+      // opacity: 0.2,
+    });
+    meshMaterial.side = DoubleSide;
+    var wireFrameMat = new MeshBasicMaterial();
+    wireFrameMat.wireframe = true;
+
+    var mesh = createMultiMaterialObject(hullGeometry, [
+      meshMaterial,
+      wireFrameMat,
+    ]);
+
+    this.add(mesh);
+    // const geometry = new BoxGeometry(30, 180, 30);
+
+    // const material = new MeshStandardMaterial({ color: 0x02520b });
+
+    // // 継承元のコンストラクターを実行
+    // super(geometry, material);
   }
 }
