@@ -119,8 +119,9 @@ class Petal extends Group {
     const latheGeometry = new LatheGeometry(points, 50, 0, 1 * Math.PI);
     const meshMaterial = new MeshNormalMaterial();
     meshMaterial.side = DoubleSide;
-    const wireFrameMat = new MeshBasicMaterial();
-    wireFrameMat.wireframe = true;
+    const wireFrameMat = new MeshStandardMaterial({ color: 0xff0000 });
+    // const wireFrameMat = new MeshBasicMaterial();
+    // wireFrameMat.wireframe = true;
 
     const mesh = createMultiMaterialObject(latheGeometry, [
       meshMaterial,
@@ -185,12 +186,13 @@ class Leaf extends Mesh {
     const meshMaterial = new MeshBasicMaterial({
       color: 0x02520b,
     });
-    meshMaterial.transparent = true;
-    meshMaterial.opacity = 0.2;
+    // meshMaterial.transparent = true;
+    // meshMaterial.opacity = 0.2;
 
     meshMaterial.side = DoubleSide;
-    const wireFrameMat = new MeshBasicMaterial();
-    wireFrameMat.wireframe = true;
+    const wireFrameMat = new MeshStandardMaterial({ color: 0x02520b });
+    // const wireFrameMat = new MeshBasicMaterial();
+    // wireFrameMat.wireframe = true;
 
     const mesh = createMultiMaterialObject(hullGeometry, [
       meshMaterial,
