@@ -44,12 +44,12 @@ export class Flower extends Object3D {
       // 配置座標を計算
       const radian = (i / length) * Math.PI * 2;
       leaf.position.set(
-        60 * Math.cos(radian), // X座標
-        -45, // Y座標
+        -120 * Math.cos(radian), // X座標
+        20, // Y座標
         60 * Math.sin(radian) // Z座標
       );
       leaf.rotation.y = -radian;
-      leaf.rotation.z += -0.5;
+      leaf.rotation.z += -1.8;
       // グループに追加する
       this.add(leaf);
     }
@@ -90,11 +90,10 @@ class Petal extends Group {
   constructor() {
     super();
 
-    var points = [];
-    var height = 5;
-    var count = 30;
+    const points = [];
+    const count = 30;
 
-    for (var i = 0; i < count; i++) {
+    for (let i = 0; i < count; i++) {
       points.push(
         new Vector2(
           (Math.sin(i * 0.08) * 2 + Math.cos(i * 0.08) * 2) * 10,
@@ -103,43 +102,32 @@ class Petal extends Group {
       );
     }
 
-    var spGroup = new Group();
+    const spGroup = new Group();
     spGroup.rotation.y = -Math.PI / 2;
-    var material = new MeshBasicMaterial({
+    const material = new MeshBasicMaterial({
       color: 0xff0000,
       transparent: false,
     });
     points.forEach(function (point) {
-      var spGeom = new SphereGeometry(0.2);
-      var spMesh = new Mesh(spGeom, material);
+      const spGeom = new SphereGeometry(0.2);
+      const spMesh = new Mesh(spGeom, material);
       spMesh.position.set(point.x, point.y, 0);
       spGroup.add(spMesh);
     });
     this.add(spGroup);
 
-    // add the points as a group to the scene
-
-    var latheGeometry = new LatheGeometry(points, 50, 0, 1 * Math.PI);
-    var meshMaterial = new MeshNormalMaterial();
+    const latheGeometry = new LatheGeometry(points, 50, 0, 1 * Math.PI);
+    const meshMaterial = new MeshNormalMaterial();
     meshMaterial.side = DoubleSide;
-    var wireFrameMat = new MeshBasicMaterial();
+    const wireFrameMat = new MeshBasicMaterial();
     wireFrameMat.wireframe = true;
 
-    var mesh = createMultiMaterialObject(latheGeometry, [
+    const mesh = createMultiMaterialObject(latheGeometry, [
       meshMaterial,
       wireFrameMat,
     ]);
 
     this.add(mesh);
-
-    // // ジオメトリを作成
-    // const geometry = new SphereGeometry(30, 30, 30);
-
-    // // マテリアルを作成
-    // const material = new MeshNormalMaterial();
-
-    // 継承元のコンストラクターを実行
-    // super(geometry, material);
   }
 }
 
@@ -147,7 +135,7 @@ class Petal extends Group {
 class Stem extends Mesh {
   // petal: Mesh;
   constructor() {
-    const geometry = new CylinderGeometry(10, 10, 250, 50);
+    const geometry = new CylinderGeometry(8, 8, 250, 50);
 
     const material = new MeshStandardMaterial({ color: 0x017a0f });
 
@@ -161,52 +149,54 @@ class Leaf extends Mesh {
   constructor() {
     super();
 
-    var height = 5;
-    var count = 30;
+    const points = [];
+    let startX, startY;
+    for (let i = 2; i < Math.PI; i += 0.1) {
+      const r = 300 * (1 + Math.cos(i));
+      const tempX = r * Math.cos(i);
+      const tempY = r * Math.sin(i);
+      const x = (tempX * Math.cos(50) + tempY * Math.sin(50)) * -1;
+      const y = tempY * Math.cos(50) - tempX * Math.sin(50);
+      if (i === 2) {
+        startX = x;
+        startY = y;
+      }
+      points.push(new Vector3(x, y, 0));
+    }
 
-    var points = [
-      new Vector3(0, -100, 0),
-      new Vector3(-10, -70, -15),
-      new Vector3(-10, -70, 15),
-      new Vector3(20, 130, 0),
-    ];
+    points.push(new Vector3(startX, startY, 0));
+    points.push(new Vector3(startX, startY, 25));
+    points.push(new Vector3(startX, startY, -25));
 
-    var spGroup = new Group();
-    var material = new MeshBasicMaterial({
+    const spGroup = new Group();
+    const material = new MeshBasicMaterial({
       color: 0x02520b,
       transparent: false,
     });
     points.forEach(function (point) {
-      var spGeom = new SphereGeometry(0.2);
-      var spMesh = new Mesh(spGeom, material);
+      const spGeom = new SphereGeometry(0.2);
+      const spMesh = new Mesh(spGeom, material);
       spMesh.position.set(point.x, point.y, 0);
       spGroup.add(spMesh);
     });
     this.add(spGroup);
 
-    // add the points as a group to the scene
-
-    var hullGeometry = new ConvexGeometry(points);
-    var meshMaterial = new MeshBasicMaterial({
+    const hullGeometry = new ConvexGeometry(points);
+    const meshMaterial = new MeshBasicMaterial({
       color: 0x02520b,
-      // transparent: true,
-      // opacity: 0.2,
     });
+    meshMaterial.transparent = true;
+    meshMaterial.opacity = 0.2;
+
     meshMaterial.side = DoubleSide;
-    var wireFrameMat = new MeshBasicMaterial();
+    const wireFrameMat = new MeshBasicMaterial();
     wireFrameMat.wireframe = true;
 
-    var mesh = createMultiMaterialObject(hullGeometry, [
+    const mesh = createMultiMaterialObject(hullGeometry, [
       meshMaterial,
       wireFrameMat,
     ]);
 
     this.add(mesh);
-    // const geometry = new BoxGeometry(30, 180, 30);
-
-    // const material = new MeshStandardMaterial({ color: 0x02520b });
-
-    // // 継承元のコンストラクターを実行
-    // super(geometry, material);
   }
 }
