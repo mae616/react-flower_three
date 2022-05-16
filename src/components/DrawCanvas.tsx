@@ -4,7 +4,6 @@ import { MakeLight } from "../classes/MakeLight";
 import { MakeCamera } from "../classes/MakeCamera";
 import { Flower } from "../classes/Flower";
 import { WebGLRenderer } from "three";
-
 function DrawCanvas(): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -72,6 +71,7 @@ function DrawCanvas(): JSX.Element {
 
     return () => window.removeEventListener("resize", onResize);
   }, []);
+
   return (
     <canvas id="myCanvas" ref={canvasRef} className="w-full h-full"></canvas>
   );

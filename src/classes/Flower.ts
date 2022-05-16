@@ -19,13 +19,15 @@ import {
 import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js";
 import { createMultiMaterialObject } from "three/examples/jsm/utils/SceneUtils.js";
 
+import { generatePetalTexture } from "../jsm/MakeTexture";
+
 export class Flower extends Object3D {
+  petals: Petals = new Petals();
   // flower: Object3D;
   constructor() {
     super();
-    const petals = new Petals();
-    this.add(petals);
-    petals.rotation.y = -0.5;
+    this.add(this.petals);
+    this.petals.rotation.y = -0.5;
 
     const stem = new Stem();
     stem.position.y = -5;
@@ -60,6 +62,7 @@ export class Flower extends Object3D {
 
 // 花弁(花びらの集まり)
 class Petals extends Group {
+  petals: Petal[] = [];
   constructor() {
     super();
 
@@ -80,6 +83,7 @@ class Petals extends Group {
 
       // グループに追加する
       this.add(petal);
+      this.petals.push(petal);
     }
   }
 }
@@ -116,10 +120,21 @@ class Petal extends Group {
     });
     this.add(spGroup);
 
+    const canvasTexture = generatePetalTexture();
     const latheGeometry = new LatheGeometry(points, 50, 0, 1 * Math.PI);
     const meshMaterial = new MeshNormalMaterial();
+
     meshMaterial.side = DoubleSide;
-    const wireFrameMat = new MeshStandardMaterial({ color: 0xff0000 });
+    const wireFrameMat = new MeshStandardMaterial({
+      // color: 0xff0000,
+      // transparent: true,
+      map: canvasTexture,
+    });
+
+    // wireFrameMat.side = DoubleSide;
+
+    // wireFrameMat.map = canvasTexture;
+    // wireFrameMat.map.needsUpdate = true;
     // const wireFrameMat = new MeshBasicMaterial();
     // wireFrameMat.wireframe = true;
 
