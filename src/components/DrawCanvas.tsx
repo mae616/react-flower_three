@@ -3,7 +3,7 @@ import { MakeScene } from "../classes/MakeScene";
 import { MakeLight } from "../classes/MakeLight";
 import { MakeCamera } from "../classes/MakeCamera";
 import { Flower } from "../classes/Flower";
-import { WebGLRenderer } from "three";
+import { WebGLRenderer, Mesh, BoxGeometry, MeshStandardMaterial } from "three";
 function DrawCanvas(): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -14,7 +14,7 @@ function DrawCanvas(): JSX.Element {
     const renderer = new WebGLRenderer({
       canvas: castedCanvasElement,
     });
-
+    renderer.shadowMap.enabled = true;
     // シーンを作成
     const scene = new MakeScene().get();
 
@@ -22,15 +22,23 @@ function DrawCanvas(): JSX.Element {
     const camera = new MakeCamera(castedCanvasElement).get();
 
     const flower = new Flower();
+    flower.castShadow = true;
     scene.add(flower);
 
     // 床を作成
-    // const meshFloor = new Mesh(
-    //   new BoxGeometry(260, 1, 260),
-    //   new MeshStandardMaterial({ color: 0xff8080, roughness: 0.0 })
-    // );
-    // meshFloor.position.set(0, -130, 0);
-    // scene.add(meshFloor);
+    const meshFloor = new Mesh(
+      new BoxGeometry(800, 1, 800),
+      new MeshStandardMaterial({
+        color: 0x4bbbfa,
+        roughness: 0.0,
+        // transparent: true,
+        // opacity: 0.0,
+      })
+    );
+    meshFloor.position.set(0, -142, 0);
+    meshFloor.rotation.x = 0.4;
+    meshFloor.receiveShadow = true;
+    scene.add(meshFloor);
 
     const light = new MakeLight(scene);
     light.setAmbientLight();

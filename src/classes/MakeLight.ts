@@ -1,4 +1,11 @@
-import { Scene, AmbientLight, DirectionalLight, RectAreaLight } from "three";
+import {
+  Scene,
+  AmbientLight,
+  DirectionalLight,
+  RectAreaLight,
+  SpotLight,
+  DirectionalLightHelper,
+} from "three";
 import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper.js";
 
 export class MakeLight {
@@ -16,8 +23,21 @@ export class MakeLight {
   setDirectionalLight() {
     // 平行光源を生成
     const light = new DirectionalLight(0xffffff);
-    light.position.set(1, 1, 1);
+    light.position.set(50, 150, 80);
+    // light.position.set(50, -80, 80);
+    const helper = new DirectionalLightHelper(light);
+    light.add(helper);
+    light.castShadow = true;
+    light.shadow.mapSize.width = 2048;
+    light.shadow.mapSize.height = 2048;
     this.scene.add(light);
+
+    // const spotlight = new SpotLight(0xffffff, 2, 100, Math.PI / 4, 1);
+    // // ライトに影を有効にする★
+    // spotlight.castShadow = true;
+    // spotlight.shadow.mapSize.width = 2048;
+    // spotlight.shadow.mapSize.height = 2048;
+    // this.scene.add(light);
   }
 
   // 滲み

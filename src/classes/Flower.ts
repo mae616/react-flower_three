@@ -5,6 +5,7 @@ import {
   // Color,
   SphereGeometry,
   BoxGeometry,
+  BufferGeometry,
   CylinderGeometry,
   MeshNormalMaterial,
   MeshStandardMaterial,
@@ -19,7 +20,7 @@ import {
 import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js";
 import { createMultiMaterialObject } from "three/examples/jsm/utils/SceneUtils.js";
 
-import { generatePetalTexture } from "../jsm/MakeTexture";
+import { generatePetalTexture, generateLeafTexture } from "../jsm/MakeTexture";
 
 export class Flower extends Object3D {
   petals: Petals = new Petals();
@@ -186,12 +187,13 @@ class Leaf extends Mesh {
 
     const spGroup = new Group();
     const material = new MeshBasicMaterial({
-      color: 0x02520b,
+      // color: 0x02520b,
       transparent: false,
     });
-    points.forEach(function (point) {
+    points.forEach(function (point, index) {
       const spGeom = new SphereGeometry(0.2);
       const spMesh = new Mesh(spGeom, material);
+
       spMesh.position.set(point.x, point.y, 0);
       spGroup.add(spMesh);
     });
@@ -205,7 +207,10 @@ class Leaf extends Mesh {
     // meshMaterial.opacity = 0.2;
 
     meshMaterial.side = DoubleSide;
-    const wireFrameMat = new MeshStandardMaterial({ color: 0x02520b });
+
+    const wireFrameMat = new MeshStandardMaterial({
+      color: 0x02520b,
+    });
     // const wireFrameMat = new MeshBasicMaterial();
     // wireFrameMat.wireframe = true;
 
