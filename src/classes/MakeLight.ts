@@ -5,6 +5,7 @@ import {
   RectAreaLight,
   SpotLight,
   DirectionalLightHelper,
+  SpotLightHelper,
 } from "three";
 import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper.js";
 
@@ -27,17 +28,22 @@ export class MakeLight {
     // light.position.set(50, -80, 80);
     const helper = new DirectionalLightHelper(light);
     light.add(helper);
-    light.castShadow = true;
-    light.shadow.mapSize.width = 2048;
-    light.shadow.mapSize.height = 2048;
+    // light.castShadow = true;
+    // light.shadow.mapSize.width = 2048;
+    // light.shadow.mapSize.height = 2048;
     this.scene.add(light);
 
-    // const spotlight = new SpotLight(0xffffff, 2, 100, Math.PI / 4, 1);
+    // const spotlight = new SpotLight(0xffffff, 50, 2000, Math.PI / 4, 1);
+    // const helper2 = new SpotLightHelper(light);
+    // spotlight.position.set(50, 150, 100);
+    // spotlight.target.position.set(-4, 0, -4);
+    // spotlight.add(helper2);
     // // ライトに影を有効にする★
     // spotlight.castShadow = true;
     // spotlight.shadow.mapSize.width = 2048;
     // spotlight.shadow.mapSize.height = 2048;
-    // this.scene.add(light);
+    // this.scene.add(spotlight.target);
+    // this.scene.add(spotlight);
   }
 
   // 滲み

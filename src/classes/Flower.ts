@@ -32,6 +32,8 @@ export class Flower extends Object3D {
 
     const stem = new Stem();
     stem.position.y = -5;
+    // stem.castShadow = true;
+    // stem.receiveShadow = true;
     this.add(stem);
 
     this.makeLeaf();
@@ -144,6 +146,8 @@ class Petal extends Group {
       wireFrameMat,
     ]);
 
+    // mesh.castShadow = true;
+    // mesh.receiveShadow = true;
     this.add(mesh);
   }
 }
@@ -208,8 +212,10 @@ class Leaf extends Mesh {
 
     meshMaterial.side = DoubleSide;
 
+    // const canvasTexture = generateLeafTexture();
     const wireFrameMat = new MeshStandardMaterial({
       color: 0x02520b,
+      // map: canvasTexture,
     });
     // const wireFrameMat = new MeshBasicMaterial();
     // wireFrameMat.wireframe = true;
@@ -219,6 +225,8 @@ class Leaf extends Mesh {
       wireFrameMat,
     ]);
 
+    // mesh.castShadow = true;
+    // mesh.receiveShadow = true;
     this.add(mesh);
   }
 }

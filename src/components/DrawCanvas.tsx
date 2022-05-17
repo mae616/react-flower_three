@@ -14,31 +14,34 @@ function DrawCanvas(): JSX.Element {
     const renderer = new WebGLRenderer({
       canvas: castedCanvasElement,
     });
-    renderer.shadowMap.enabled = true;
+    // renderer.shadowMap.enabled = true;
     // シーンを作成
     const scene = new MakeScene().get();
 
     // カメラを作成
     const camera = new MakeCamera(castedCanvasElement).get();
 
-    const flower = new Flower();
-    flower.castShadow = true;
-    scene.add(flower);
+    for (let i = -1; i < 2; i++) {
+      const flower = new Flower();
+      // flower.castShadow = true;
+      flower.position.x = i * 300;
+      scene.add(flower);
+    }
 
-    // 床を作成
-    const meshFloor = new Mesh(
-      new BoxGeometry(800, 1, 800),
-      new MeshStandardMaterial({
-        color: 0x4bbbfa,
-        roughness: 0.0,
-        // transparent: true,
-        // opacity: 0.0,
-      })
-    );
-    meshFloor.position.set(0, -142, 0);
-    meshFloor.rotation.x = 0.4;
-    meshFloor.receiveShadow = true;
-    scene.add(meshFloor);
+    // // 床を作成
+    // const meshFloor = new Mesh(
+    //   new BoxGeometry(800, 1, 800),
+    //   new MeshStandardMaterial({
+    //     color: 0x4bbbfa,
+    //     roughness: 0.0,
+    //     // transparent: true,
+    //     // opacity: 0.0,
+    //   })
+    // );
+    // meshFloor.position.set(0, -142, 0);
+    // meshFloor.rotation.x = 0.4;
+    // meshFloor.receiveShadow = true;
+    // scene.add(meshFloor);
 
     const light = new MakeLight(scene);
     light.setAmbientLight();
