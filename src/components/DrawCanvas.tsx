@@ -3,6 +3,7 @@ import { MakeScene } from "../classes/MakeScene";
 import { MakeLight } from "../classes/MakeLight";
 import { MakeCamera } from "../classes/MakeCamera";
 import { Flower } from "../classes/Flower";
+import { Bleeding } from "../classes/Bleeding";
 import { WebGLRenderer, Mesh, BoxGeometry, MeshStandardMaterial } from "three";
 function DrawCanvas(): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -46,7 +47,9 @@ function DrawCanvas(): JSX.Element {
     const light = new MakeLight(scene);
     light.setAmbientLight();
     light.setDirectionalLight();
-    light.setBleeding();
+
+    const bleeding = new Bleeding(scene, renderer);
+    scene.add(bleeding);
 
     const tick = (): void => {
       requestAnimationFrame(tick);
