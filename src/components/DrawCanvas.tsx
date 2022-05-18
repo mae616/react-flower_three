@@ -5,6 +5,16 @@ import { MakeCamera } from "../classes/MakeCamera";
 import { Flower } from "../classes/Flower";
 import { Bleeding } from "../classes/Bleeding";
 import { WebGLRenderer, Mesh, BoxGeometry, MeshStandardMaterial } from "three";
+
+import { HalftonePass } from "three/examples/jsm/postprocessing/HalftonePass";
+import { GlitchPass } from "three/examples/jsm/postprocessing/GlitchPass";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
+import { BloomPass } from "three/examples/jsm/postprocessing/BloomPass";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass";
+import { CopyShader } from "three/examples/jsm/shaders/CopyShader.js";
+import { TexturePass } from "three/examples/jsm/postprocessing/TexturePass";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
+
 function DrawCanvas(): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -51,14 +61,40 @@ function DrawCanvas(): JSX.Element {
     const bleeding = new Bleeding(scene, renderer);
     scene.add(bleeding);
 
+    const params = {
+      shape: 1,
+      radius: 4,
+      rotateR: Math.PI / 12,
+      rotateB: (Math.PI / 12) * 2,
+      rotateG: (Math.PI / 12) * 3,
+      scatter: 0,
+      blending: 1,
+      blendingMode: 1,
+      greyscale: false,
+      disable: false,
+    };
+    const composer = new EffectComposer(renderer);
+    const renderPass = new RenderPass(scene, camera);
+    const halftonePass = new HalftonePass(
+      window.innerWidth,
+      window.innerHeight,
+      params
+    );
+    const glitchPass = new GlitchPass();
+
+    composer.addPass(renderPass);
+    composer.addPass(halftonePass);
+    composer.addPass(glitchPass);
+
     const tick = (): void => {
       requestAnimationFrame(tick);
 
       // box.rotation.x += 0.01;
       // box.rotation.y += 0.01;
 
+      composer.render();
       // 描画
-      renderer.render(scene, camera);
+      // renderer.render(scene, camera);
     };
     tick();
 
