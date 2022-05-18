@@ -48,12 +48,12 @@ export class Bleeding extends Group {
     // cubeCamera.renderTarget.texture.minFilter = LinearMipMapLinearFilter;
     scene.add(cubeCamera);
 
-    const bleed = new Bleed(scene, renderer, cubeRenderTarget.texture, 10)
+    const bleed = new Bleed(scene, renderer, cubeRenderTarget.texture, 9)
       .children[0];
     bleed.position.set(
-      -25, // X座標
-      145, // Y座標
-      90 // Z座標
+      -120, // X座標
+      0, // Y座標
+      5 // Z座標
     );
     const radian = (1 / 6) * Math.PI * 2;
     bleed.rotation.y = -radian;
@@ -68,12 +68,12 @@ export class Bleeding extends Group {
 
     scene.add(bleed);
 
-    const bleed2 = new Bleed(scene, renderer, cubeRenderTarget.texture, 5)
+    const bleed2 = new Bleed(scene, renderer, cubeRenderTarget.texture, 4)
       .children[0];
     bleed2.position.set(
-      -28, // X座標
-      130, // Y座標
-      100 // Z座標
+      -118, // X座標
+      -10, // Y座標
+      2 // Z座標
     );
     bleed2.rotation.y = -radian;
     bleed2.rotation.z += -0.3;
@@ -118,14 +118,14 @@ class Bleed extends Group {
     // });
 
     const material3 = new MeshPhysicalMaterial({
-      color: 0xdb2172,
+      color: 0x032f08,
       envMap: texture,
       // reflectivity: 1, //反射率
       // opacity: 0.2, //不透明度で反射具合を調整
       // transparent: true, //透明を有効に
       // refractionRatio: 0.2, //屈折率
       opacity: 1, //不透明度で反射具合を調整
-      transmission: 0.8, //透過率
+      transmission: 0.6, //透過率
       metalness: 0,
       roughness: 0,
     });

@@ -6,7 +6,7 @@ export class MakeCamera {
   constructor(canvas: HTMLCanvasElement) {
     // カメラを作成
     this.camera = new PerspectiveCamera(45, 800 / 600, 1, 10000);
-    this.camera.position.set(0, 0, 600);
+    this.camera.position.set(0, 0, 500);
 
     // カメラコントローラーを作成
     const controls = new OrbitControls(this.camera, canvas);
