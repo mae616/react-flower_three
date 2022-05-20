@@ -13,6 +13,7 @@ import {
   ShaderMaterial,
   Layers,
   Object3D,
+  CanvasTexture,
 } from "three";
 
 import { HalftonePass } from "three/examples/jsm/postprocessing/HalftonePass";
@@ -26,6 +27,12 @@ import { TexturePass } from "three/examples/jsm/postprocessing/TexturePass";
 import {} from "three/examples/jsm/postprocessing/UnrealBloomPass";
 
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
+
+import {
+  generatePetalTexture_red,
+  generatePetalTexture_yellow,
+  generatePetalTexture_blue,
+} from "../jsm/MakeTexture";
 
 function DrawCanvas(): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -54,8 +61,13 @@ function DrawCanvas(): JSX.Element {
     camera.layers.enable(0);
 
     const flowers: Flower[] = [];
+    const texture: CanvasTexture[] = [
+      generatePetalTexture_yellow(),
+      generatePetalTexture_red(),
+      generatePetalTexture_blue(),
+    ];
     for (let i = -1; i < 2; i++) {
-      const flower = new Flower(scene, i * 300, bloomLayer);
+      const flower = new Flower(scene, i * 300, bloomLayer, texture[i + 1]);
       // flower.castShadow = true;
 
       scene.add(flower);

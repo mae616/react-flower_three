@@ -33,7 +33,7 @@ import {
 import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js";
 import { createMultiMaterialObject } from "three/examples/jsm/utils/SceneUtils.js";
 
-import { generatePetalTexture, generateLeafTexture } from "../jsm/MakeTexture";
+// import { generatePetalTexture, generateLeafTexture } from "../jsm/MakeTexture";
 
 // 滲み
 export class Bleeding extends Group {

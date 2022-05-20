@@ -1,10 +1,11 @@
-import { Scene, Color } from "three";
+import { Scene, Color, TextureLoader } from "three";
 
 export class MakeScene {
   scene: Scene;
   constructor() {
     this.scene = new Scene();
-    this.scene.background = new Color(0x7dd3fc);
+    const texture = new TextureLoader().load("textures/watercolor-4116932.png");
+    this.scene.background = texture;
   }
 
   get() {

@@ -16,20 +16,24 @@ import {
   DoubleSide,
   MeshBasicMaterial,
   Layers,
+  CanvasTexture,
 } from "three";
 
 import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js";
 import { createMultiMaterialObject } from "three/examples/jsm/utils/SceneUtils.js";
 
-import { generatePetalTexture, generateLeafTexture } from "../jsm/MakeTexture";
-
 export class Flower extends Object3D {
-  petals: Petals = new Petals();
   // flower: Object3D;
-  constructor(scene: Scene, position: number, bloomLayer: Layers) {
+  constructor(
+    scene: Scene,
+    position: number,
+    bloomLayer: Layers,
+    petalTexture: CanvasTexture
+  ) {
     super();
-    this.add(this.petals);
-    this.petals.rotation.y = -0.5;
+    const petals: Petals = new Petals(petalTexture);
+    this.add(petals);
+    petals.rotation.y = -0.5;
 
     const stem = new Stem();
     stem.position.y = -5;
@@ -77,12 +81,12 @@ export class Flower extends Object3D {
 // 花弁(花びらの集まり)
 class Petals extends Group {
   petals: Petal[] = [];
-  constructor() {
+  constructor(petalTexture: CanvasTexture) {
     super();
 
     const length = 6;
     for (let i = 0; i < length; i++) {
-      const petal = new Petal();
+      const petal = new Petal(petalTexture);
 
       // 配置座標を計算
       const radian = (i / length) * Math.PI * 2;
@@ -105,7 +109,7 @@ class Petals extends Group {
 // 花びら
 class Petal extends Group {
   // petal: Mesh;
-  constructor() {
+  constructor(petalTexture: CanvasTexture) {
     super();
 
     const points = [];
@@ -134,7 +138,6 @@ class Petal extends Group {
     });
     this.add(spGroup);
 
-    const canvasTexture = generatePetalTexture();
     const latheGeometry = new LatheGeometry(points, 50, 0, 1 * Math.PI);
     const meshMaterial = new MeshNormalMaterial();
 
@@ -142,7 +145,7 @@ class Petal extends Group {
     const wireFrameMat = new MeshStandardMaterial({
       // color: 0xff0000,
       // transparent: true,
-      map: canvasTexture,
+      map: petalTexture,
     });
 
     // wireFrameMat.side = DoubleSide;
