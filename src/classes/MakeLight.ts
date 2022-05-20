@@ -33,7 +33,7 @@ export class MakeLight {
     // light.shadow.mapSize.height = 2048;
 
     light.layers.enable(0);
-    light.layers.enable(0);
+    light.layers.enable(1);
     this.scene.add(light);
 
     // const spotlight = new SpotLight(0xffffff, 50, 2000, Math.PI / 4, 1);

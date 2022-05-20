@@ -7,13 +7,14 @@ import { Bleeding } from "../classes/Bleeding";
 import { Balls } from "../classes/Balls";
 import {
   WebGLRenderer,
-  Mesh,
-  BoxGeometry,
-  MeshStandardMaterial,
-  Vector2,
-  ShaderMaterial,
+  // Mesh,
+  // BoxGeometry,
+  // MeshStandardMaterial,
+  // Vector2,
+  // ShaderMaterial,
   Layers,
-  Object3D,
+  // Object3D,
+  Color,
   CanvasTexture,
 } from "three";
 
@@ -24,8 +25,8 @@ import { BloomPass } from "three/examples/jsm/postprocessing/BloomPass";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass";
 import { CopyShader } from "three/examples/jsm/shaders/CopyShader.js";
 // import { XAAShader } from "three/examples/jsm/shaders/XAAShader.js";
-import { TexturePass } from "three/examples/jsm/postprocessing/TexturePass";
-import {} from "three/examples/jsm/postprocessing/UnrealBloomPass";
+// import { TexturePass } from "three/examples/jsm/postprocessing/TexturePass";
+// import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
 
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 
@@ -49,17 +50,17 @@ function DrawCanvas(): JSX.Element {
     // シーンを作成
     const scene = new MakeScene().get();
 
-    const ENTIRE_SCENE = 0;
-    const BLOOM_SCENE = 1;
+    // const ENTIRE_SCENE = 0;
+    // const BLOOM_SCENE = 1;
 
-    const bloomLayer = new Layers();
-    bloomLayer.set(BLOOM_SCENE);
+    // const bloomLayer = new Layers();
+    // bloomLayer.set(BLOOM_SCENE);
 
     // カメラを作成
     const camera = new MakeCamera(castedCanvasElement).get();
 
     camera.layers.enable(0);
-    camera.layers.enable(0);
+    camera.layers.enable(1);
 
     const flowers: Flower[] = [];
     const texture: CanvasTexture[] = [
@@ -68,7 +69,12 @@ function DrawCanvas(): JSX.Element {
       generatePetalTexture_blue(),
     ];
     for (let i = -1; i < 2; i++) {
-      const flower = new Flower(scene, i * 300, bloomLayer, texture[i + 1]);
+      const flower = new Flower(
+        scene,
+        i * 300,
+        //bloomLayer,
+        texture[i + 1]
+      );
       // flower.castShadow = true;
 
       scene.add(flower);
@@ -94,23 +100,24 @@ function DrawCanvas(): JSX.Element {
     light.setAmbientLight();
     light.setDirectionalLight();
 
-    const bleeding = new Bleeding(scene, renderer, bloomLayer);
+    const bleeding = new Bleeding(scene, renderer);
     scene.add(bleeding);
 
-    const balls = new Balls(scene, renderer, bloomLayer);
+    const balls = new Balls(scene, renderer);
     scene.add(balls);
 
+    // const renderPass = new RenderPass(scene, camera);
     // const params = {
-    //   // shape: 1,
-    //   // radius: 4,
-    //   // rotateR: Math.PI / 12,
-    //   // rotateB: (Math.PI / 12) * 2,
-    //   // rotateG: (Math.PI / 12) * 3,
-    //   // scatter: 0,
+    //   shape: 1,
+    //   radius: 4,
+    //   rotateR: Math.PI / 12,
+    //   rotateB: (Math.PI / 12) * 2,
+    //   rotateG: (Math.PI / 12) * 3,
+    //   scatter: 0,
     //   blending: 1,
-    //   // blendingMode: 1,
-    //   // greyscale: false,
-    //   // disable: false,
+    //   blendingMode: 1,
+    //   greyscale: false,
+    //   disable: false,
     // };
     // const composer = new EffectComposer(renderer);
 
@@ -153,13 +160,13 @@ function DrawCanvas(): JSX.Element {
     // composer.addPass(bloomPass);
     //---------
     const renderPass = new RenderPass(scene, camera);
-    var bloomPass = new BloomPass(3, 25, 0.02, 380);
+    var bloomPass = new BloomPass(3, 25, 0.3, 380);
     var composer = new EffectComposer(renderer);
     composer.setSize(window.innerWidth, window.innerHeight);
     var effectCopy = new ShaderPass(CopyShader);
-    // effectCopy.renderToScreen = true;
+    effectCopy.renderToScreen = true;
 
-    composer.renderToScreen = false;
+    // composer.renderToScreen = false;
     composer.addPass(renderPass);
 
     composer.addPass(bloomPass);
@@ -183,44 +190,60 @@ function DrawCanvas(): JSX.Element {
 
     // renderer.toneMappingExposure = Math.pow(0.9, 4.0);
 
-    const materials = {};
+    // const materials = {};
     const tick = (): void => {
       requestAnimationFrame(tick);
-
+      // renderer.autoClear = false;
+      // renderer.clear();
       // // scene.traverse(darkenNonBloomed);
       // scene.traverse(darkenNonBloomed);
-      // composer.render();
+      // camera.layers.set(0);
+
       // scene.traverse(restoreMaterial);
+      // camera.layers.set(0);
       // finalComposer.render();
       // // composer.render();
 
       // // renderer.clearDepth();
+      // camera.layers.set(1);
+      // scene.background = null;
+      // camera.layers.disable(0);
+      // composer.render();
 
       // 描画
+      // camera.layers.enable(1);
+      // camera.layers.disable(0);
+      camera.layers.enableAll();
+      // // camera.layers.disable(1);
+      // finalComposer.render();
       renderer.render(scene, camera);
+
+      // renderer.clearDepth();
+
+      // camera.layers.enableAll();
     };
     tick();
 
-    //@ts-ignore
-    function darkenNonBloomed(obj) {
-      if (obj.isMesh && bloomLayer.test(obj.layers) === false) {
-        //@ts-ignore
-        materials[obj.uuid] = obj.material;
-        obj.material = flowers[1];
-      }
-    }
+    // //@ts-ignore
+    // function darkenNonBloomed(obj) {
+    //   if (obj.isMesh && bloomLayer.test(obj.layers) === false) {
+    //     //@ts-ignore
+    //     materials[obj.uuid] = obj.material;
+    //     obj.material = flowers[1];
+    //   }
+    // }
 
-    //@ts-ignore
-    function restoreMaterial(obj) {
-      //@ts-ignore
-      if (materials[obj.uuid]) {
-        //@ts-ignore
-        obj.material = materials[obj.uuid];
-        //@ts-ignore
-        delete materials[obj.uuid];
-      }
-    }
-    console.log("Hello Three.js");
+    // //@ts-ignore
+    // function restoreMaterial(obj) {
+    //   //@ts-ignore
+    //   if (materials[obj.uuid]) {
+    //     //@ts-ignore
+    //     obj.material = materials[obj.uuid];
+    //     //@ts-ignore
+    //     delete materials[obj.uuid];
+    //   }
+    // }
+    // console.log("Hello Three.js");
 
     // 初期化のために実行
     onResize();

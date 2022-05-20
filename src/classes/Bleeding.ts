@@ -39,7 +39,11 @@ import { createMultiMaterialObject } from "three/examples/jsm/utils/SceneUtils.j
 export class Bleeding extends Group {
   // petal: Mesh;
 
-  constructor(scene: Scene, renderer: WebGLRenderer, bloomLayer: Layers) {
+  constructor(
+    scene: Scene,
+    renderer: WebGLRenderer
+    //bloomLayer: Layers
+  ) {
     super();
     const cubeRenderTarget = new WebGLCubeRenderTarget(128, {
       generateMipmaps: true,
@@ -187,7 +191,7 @@ class Bleed extends Group {
     const mesh = new Mesh(geometry, material3);
 
     // mesh.layers.disable(0);
-    mesh.layers.enable(1);
+    mesh.layers.set(1);
 
     this.add(mesh);
   }

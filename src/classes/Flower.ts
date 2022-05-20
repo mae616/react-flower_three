@@ -27,7 +27,7 @@ export class Flower extends Object3D {
   constructor(
     scene: Scene,
     position: number,
-    bloomLayer: Layers,
+    // bloomLayer: Layers,
     petalTexture: CanvasTexture
   ) {
     super();
@@ -49,7 +49,6 @@ export class Flower extends Object3D {
     const leaves = this.makeLeaf();
     leaves.rotation.x = 0.4;
     leaves.position.x = position;
-    leaves.layers.enable(1);
     scene.add(leaves);
   }
 
@@ -241,6 +240,7 @@ class Leaf extends Mesh {
       wireFrameMat,
     ]);
 
+    mesh.layers.set(1);
     // mesh.layers.enable(1);
     // mesh.castShadow = true;
     // mesh.receiveShadow = true;

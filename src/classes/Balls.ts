@@ -39,7 +39,10 @@ import { createMultiMaterialObject } from "three/examples/jsm/utils/SceneUtils.j
 export class Balls extends Group {
   // petal: Mesh;
 
-  constructor(scene: Scene, renderer: WebGLRenderer, bloomLayer: Layers) {
+  constructor(
+    scene: Scene,
+    renderer: WebGLRenderer //bloomLayer: Layers
+  ) {
     super();
     // const cubeRenderTarget = new WebGLCubeRenderTarget(128, {
     //   generateMipmaps: true,
@@ -141,7 +144,7 @@ class Ball extends Group {
 
     // const canvasTexture = generatePetalTexture();
     // const latheGeometry = new LatheGeometry(points, 50, 0, 1 * Math.PI);
-    const geometry = new IcosahedronGeometry(Math.random() * 17, 3);
+    const geometry = new IcosahedronGeometry(Math.random() * (17 - 3) + 3, 3);
     // const wireFrameMat = new MeshPhysicalMaterial({
     //   color: 0xf54c71,
     //   opacity: 1,
@@ -165,7 +168,7 @@ class Ball extends Group {
     const mesh = new Mesh(geometry, material3);
 
     // mesh.layers.disable(0);
-    mesh.layers.enable(1);
+    mesh.layers.set(1);
 
     this.add(mesh);
   }
