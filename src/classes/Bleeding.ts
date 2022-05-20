@@ -27,6 +27,7 @@ import {
   DoubleSide,
   MeshBasicMaterial,
   Texture,
+  Layers,
 } from "three";
 
 import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js";
@@ -38,15 +39,15 @@ import { generatePetalTexture, generateLeafTexture } from "../jsm/MakeTexture";
 export class Bleeding extends Group {
   // petal: Mesh;
 
-  constructor(scene: Scene, renderer: WebGLRenderer) {
+  constructor(scene: Scene, renderer: WebGLRenderer, bloomLayer: Layers) {
     super();
     const cubeRenderTarget = new WebGLCubeRenderTarget(128, {
       generateMipmaps: true,
       minFilter: LinearMipmapLinearFilter,
     });
-    const cubeCamera = new CubeCamera(1, 1000, cubeRenderTarget);
+    // const cubeCamera = new CubeCamera(1, 1000, cubeRenderTarget);
     // cubeCamera.renderTarget.texture.minFilter = LinearMipMapLinearFilter;
-    scene.add(cubeCamera);
+    // scene.add(cubeCamera);
 
     const bleed = new Bleed(scene, renderer, cubeRenderTarget.texture, 9)
       .children[0];
@@ -59,13 +60,14 @@ export class Bleeding extends Group {
     bleed.rotation.y = -radian;
     bleed.rotation.z += -0.3;
 
-    bleed.visible = false;
-    cubeCamera.position.copy(bleed.position);
-    cubeCamera.update(renderer, scene);
+    // bleed.visible = false;
+    // cubeCamera.position.copy(bleed.position);
+    // cubeCamera.update(renderer, scene);
 
     // Render the scene
     bleed.visible = true;
 
+    // bleed.layers.enable(1);
     scene.add(bleed);
 
     const bleed2 = new Bleed(scene, renderer, cubeRenderTarget.texture, 4)
@@ -78,12 +80,13 @@ export class Bleeding extends Group {
     bleed2.rotation.y = -radian;
     bleed2.rotation.z += -0.3;
 
-    bleed2.visible = false;
-    cubeCamera.position.copy(bleed2.position);
-    cubeCamera.update(renderer, scene);
+    // bleed2.visible = false;
+    // cubeCamera.position.copy(bleed2.position);
+    // cubeCamera.update(renderer, scene);
 
     // Render the scene
     bleed2.visible = true;
+    // bleed2.layers.enable(2);
 
     scene.add(bleed2);
   }
@@ -182,6 +185,9 @@ class Bleed extends Group {
     // mesh.castShadow = true;
     // mesh.receiveShadow = true;
     const mesh = new Mesh(geometry, material3);
+
+    // mesh.layers.disable(0);
+    mesh.layers.enable(1);
 
     this.add(mesh);
   }

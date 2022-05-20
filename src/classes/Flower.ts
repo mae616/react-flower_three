@@ -1,7 +1,7 @@
 import {
   Object3D,
   Mesh,
-  // Scene,
+  Scene,
   // Color,
   SphereGeometry,
   BoxGeometry,
@@ -15,6 +15,7 @@ import {
   LatheGeometry,
   DoubleSide,
   MeshBasicMaterial,
+  Layers,
 } from "three";
 
 import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js";
@@ -25,7 +26,7 @@ import { generatePetalTexture, generateLeafTexture } from "../jsm/MakeTexture";
 export class Flower extends Object3D {
   petals: Petals = new Petals();
   // flower: Object3D;
-  constructor() {
+  constructor(scene: Scene, position: number, bloomLayer: Layers) {
     super();
     this.add(this.petals);
     this.petals.rotation.y = -0.5;
@@ -35,12 +36,21 @@ export class Flower extends Object3D {
     // stem.castShadow = true;
     // stem.receiveShadow = true;
     this.add(stem);
-
-    this.makeLeaf();
     this.rotation.x = 0.4;
+    this.position.x = position;
+
+    this.layers.enable(0);
+    scene.add(this);
+
+    const leaves = this.makeLeaf();
+    leaves.rotation.x = 0.4;
+    leaves.position.x = position;
+    leaves.layers.enable(1);
+    scene.add(leaves);
   }
 
-  private makeLeaf() {
+  private makeLeaf(): Group {
+    const leaves = new Group();
     const length = 2;
     for (let i = 0; i < length; i++) {
       // 直方体を作成
@@ -56,8 +66,9 @@ export class Flower extends Object3D {
       leaf.rotation.y = -radian;
       leaf.rotation.z += -1.8;
       // グループに追加する
-      this.add(leaf);
+      leaves.add(leaf);
     }
+    return leaves;
   }
 
   // get() {}
@@ -199,6 +210,8 @@ class Leaf extends Mesh {
       const spMesh = new Mesh(spGeom, material);
 
       spMesh.position.set(point.x, point.y, 0);
+      spMesh.layers.disable(0);
+      spMesh.layers.enable(1);
       spGroup.add(spMesh);
     });
     this.add(spGroup);
@@ -225,6 +238,7 @@ class Leaf extends Mesh {
       wireFrameMat,
     ]);
 
+    // mesh.layers.enable(1);
     // mesh.castShadow = true;
     // mesh.receiveShadow = true;
     this.add(mesh);

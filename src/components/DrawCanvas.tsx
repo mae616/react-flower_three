@@ -4,7 +4,16 @@ import { MakeLight } from "../classes/MakeLight";
 import { MakeCamera } from "../classes/MakeCamera";
 import { Flower } from "../classes/Flower";
 import { Bleeding } from "../classes/Bleeding";
-import { WebGLRenderer, Mesh, BoxGeometry, MeshStandardMaterial } from "three";
+import {
+  WebGLRenderer,
+  Mesh,
+  BoxGeometry,
+  MeshStandardMaterial,
+  Vector2,
+  ShaderMaterial,
+  Layers,
+  Object3D,
+} from "three";
 
 import { HalftonePass } from "three/examples/jsm/postprocessing/HalftonePass";
 import { GlitchPass } from "three/examples/jsm/postprocessing/GlitchPass";
@@ -12,7 +21,10 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { BloomPass } from "three/examples/jsm/postprocessing/BloomPass";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass";
 import { CopyShader } from "three/examples/jsm/shaders/CopyShader.js";
+// import { XAAShader } from "three/examples/jsm/shaders/XAAShader.js";
 import { TexturePass } from "three/examples/jsm/postprocessing/TexturePass";
+import {} from "three/examples/jsm/postprocessing/UnrealBloomPass";
+
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 
 function DrawCanvas(): JSX.Element {
@@ -29,14 +41,25 @@ function DrawCanvas(): JSX.Element {
     // シーンを作成
     const scene = new MakeScene().get();
 
+    const ENTIRE_SCENE = 0;
+    const BLOOM_SCENE = 1;
+
+    const bloomLayer = new Layers();
+    bloomLayer.set(BLOOM_SCENE);
+
     // カメラを作成
     const camera = new MakeCamera(castedCanvasElement).get();
 
+    camera.layers.enable(0);
+    camera.layers.enable(0);
+
+    const flowers: Flower[] = [];
     for (let i = -1; i < 2; i++) {
-      const flower = new Flower();
+      const flower = new Flower(scene, i * 300, bloomLayer);
       // flower.castShadow = true;
-      flower.position.x = i * 300;
+
       scene.add(flower);
+      flowers.push(flower);
     }
 
     // // 床を作成
@@ -58,46 +81,129 @@ function DrawCanvas(): JSX.Element {
     light.setAmbientLight();
     light.setDirectionalLight();
 
-    const bleeding = new Bleeding(scene, renderer);
+    const bleeding = new Bleeding(scene, renderer, bloomLayer);
     scene.add(bleeding);
 
-    const params = {
-      shape: 1,
-      radius: 4,
-      rotateR: Math.PI / 12,
-      rotateB: (Math.PI / 12) * 2,
-      rotateG: (Math.PI / 12) * 3,
-      scatter: 0,
-      blending: 1,
-      blendingMode: 1,
-      greyscale: false,
-      disable: false,
-    };
-    const composer = new EffectComposer(renderer);
+    // const params = {
+    //   // shape: 1,
+    //   // radius: 4,
+    //   // rotateR: Math.PI / 12,
+    //   // rotateB: (Math.PI / 12) * 2,
+    //   // rotateG: (Math.PI / 12) * 3,
+    //   // scatter: 0,
+    //   blending: 1,
+    //   // blendingMode: 1,
+    //   // greyscale: false,
+    //   // disable: false,
+    // };
+    // const composer = new EffectComposer(renderer);
+
+    // const halftonePass = new HalftonePass(
+    //   window.innerWidth,
+    //   window.innerHeight,
+    //   params
+    // );
+
+    // const glitchPass = new GlitchPass();
+
+    // composer.addPass(renderPass);
+    // composer.addPass(halftonePass);
+    // composer.addPass(glitchPass);
+
+    // const renderScene = new RenderPass(scene, camera);
+
+    // const effectFXAA = new ShaderPass(CopyShader);
+    // // effectFXAA.uniforms.resolution.value.set(
+    // //   1 / window.innerWidth,
+    // //   1 / window.innerHeight
+    // // );
+
+    // const bloomPass = new UnrealBloomPass(
+    //   new Vector2(window.innerWidth, window.innerHeight),
+    //   8,
+    //   8,
+    //   1.85
+    // );
+    // bloomPass.threshold = 0.21;
+    // bloomPass.strength = 1.2;
+    // bloomPass.radius = 0.55;
+    // bloomPass.renderToScreen = true;
+
+    // const composer = new EffectComposer(renderer);
+    // composer.setSize(window.innerWidth, window.innerHeight);
+
+    // composer.addPass(renderScene);
+    // composer.addPass(effectFXAA);
+    // composer.addPass(bloomPass);
+    //---------
     const renderPass = new RenderPass(scene, camera);
-    const halftonePass = new HalftonePass(
-      window.innerWidth,
-      window.innerHeight,
-      params
-    );
-    const glitchPass = new GlitchPass();
+    var bloomPass = new BloomPass(3, 25, 0.02, 380);
+    var composer = new EffectComposer(renderer);
+    composer.setSize(window.innerWidth, window.innerHeight);
+    var effectCopy = new ShaderPass(CopyShader);
+    // effectCopy.renderToScreen = true;
 
+    composer.renderToScreen = false;
     composer.addPass(renderPass);
-    composer.addPass(halftonePass);
-    composer.addPass(glitchPass);
 
+    composer.addPass(bloomPass);
+    composer.addPass(effectCopy);
+
+    // const finalPass = new ShaderPass(
+    //   new ShaderMaterial({
+    //     uniforms: {
+    //       baseTexture: { value: null },
+    //       bloomTexture: { value: composer.renderTarget2.texture },
+    //     },
+    //     defines: {},
+    //   }),
+    //   "baseTexture"
+    // );
+    // finalPass.needsSwap = true;
+
+    const finalComposer = new EffectComposer(renderer);
+    finalComposer.addPass(renderPass);
+    composer.addPass(effectCopy);
+
+    // renderer.toneMappingExposure = Math.pow(0.9, 4.0);
+
+    const materials = {};
     const tick = (): void => {
       requestAnimationFrame(tick);
 
-      // box.rotation.x += 0.01;
-      // box.rotation.y += 0.01;
+      // // scene.traverse(darkenNonBloomed);
+      // scene.traverse(darkenNonBloomed);
+      // composer.render();
+      // scene.traverse(restoreMaterial);
+      // finalComposer.render();
+      // // composer.render();
 
-      composer.render();
+      // // renderer.clearDepth();
+
       // 描画
-      // renderer.render(scene, camera);
+      renderer.render(scene, camera);
     };
     tick();
 
+    //@ts-ignore
+    function darkenNonBloomed(obj) {
+      if (obj.isMesh && bloomLayer.test(obj.layers) === false) {
+        //@ts-ignore
+        materials[obj.uuid] = obj.material;
+        obj.material = flowers[1];
+      }
+    }
+
+    //@ts-ignore
+    function restoreMaterial(obj) {
+      //@ts-ignore
+      if (materials[obj.uuid]) {
+        //@ts-ignore
+        obj.material = materials[obj.uuid];
+        //@ts-ignore
+        delete materials[obj.uuid];
+      }
+    }
     console.log("Hello Three.js");
 
     // 初期化のために実行
