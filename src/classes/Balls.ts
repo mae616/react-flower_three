@@ -105,7 +105,7 @@ class Ball extends Group {
       // opacity: 0.2, //不透明度で反射具合を調整
       transparent: true, //透明を有効に
       // refractionRatio: 0.2, //屈折率
-      opacity: 0.5, //不透明度で反射具合を調整
+      opacity: 0.35, //不透明度で反射具合を調整
       transmission: 0.9, //透過率
       metalness: 0.1,
       roughness: 0.1,
@@ -141,7 +141,7 @@ class Ball extends Group {
 
     // const canvasTexture = generatePetalTexture();
     // const latheGeometry = new LatheGeometry(points, 50, 0, 1 * Math.PI);
-    const geometry = new IcosahedronGeometry(Math.random() * 20, 3);
+    const geometry = new IcosahedronGeometry(Math.random() * 17, 3);
     // const wireFrameMat = new MeshPhysicalMaterial({
     //   color: 0xf54c71,
     //   opacity: 1,
