@@ -28,6 +28,7 @@ import {
   MeshBasicMaterial,
   Texture,
   Layers,
+  ColorRepresentation,
 } from "three";
 
 import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js";
@@ -51,9 +52,14 @@ export class Balls extends Group {
     // const cubeCamera = new CubeCamera(1, 1000, cubeRenderTarget);
     // cubeCamera.renderTarget.texture.minFilter = LinearMipMapLinearFilter;
     // scene.add(cubeCamera);
-
-    for (let i = 0; i < 30; i++) {
-      const ball = new Ball(scene, renderer, 9).children[0];
+    const color: ColorRepresentation[] = [0xd9f3ff, 0x97ddfc, 0x3bc3ff];
+    for (let i = 0; i < 25; i++) {
+      const ball = new Ball(
+        scene,
+        renderer,
+        Math.random() * (17 - 3) + 3,
+        color[Math.floor(Math.random() * color.length)]
+      ).children[0];
       ball.position.set(
         500 - Math.random() * 1000, // X座標
         300 - Math.random() * 600, // Y座標
@@ -70,6 +76,136 @@ export class Balls extends Group {
 
       scene.add(ball);
     }
+
+    for (let i = 0; i < 5; i++) {
+      const ball = new Ball(
+        scene,
+        renderer,
+        Math.random() * (15 - 3) + 3,
+        0xf7597b
+      ).children[0];
+      ball.position.set(
+        500 - Math.random() * 1000, // X座標
+        300 - Math.random() * 600, // Y座標
+        300 - Math.random() * 400 // Z座標
+      );
+
+      // bleed2.visible = false;
+      // cubeCamera.position.copy(bleed2.position);
+      // cubeCamera.update(renderer, scene);
+
+      // Render the scene
+      ball.visible = true;
+      // bleed2.layers.enable(2);
+
+      scene.add(ball);
+    }
+
+    for (let i = 0; i < 3; i++) {
+      const ball = new Ball(
+        scene,
+        renderer,
+        Math.random() * (15 - 3) + 3,
+        0xf4fa57
+      ).children[0];
+      ball.position.set(
+        500 - Math.random() * 1000, // X座標
+        300 - Math.random() * 600, // Y座標
+        300 - Math.random() * 400 // Z座標
+      );
+
+      // bleed2.visible = false;
+      // cubeCamera.position.copy(bleed2.position);
+      // cubeCamera.update(renderer, scene);
+
+      // Render the scene
+      ball.visible = true;
+      // bleed2.layers.enable(2);
+
+      scene.add(ball);
+    }
+
+    for (let i = 0; i < 3; i++) {
+      const ball = new Ball(
+        scene,
+        renderer,
+        Math.random() * (15 - 3) + 3,
+        0x8857fa
+      ).children[0];
+      ball.position.set(
+        500 - Math.random() * 1000, // X座標
+        300 - Math.random() * 600, // Y座標
+        300 - Math.random() * 400 // Z座標
+      );
+
+      // bleed2.visible = false;
+      // cubeCamera.position.copy(bleed2.position);
+      // cubeCamera.update(renderer, scene);
+
+      // Render the scene
+      ball.visible = true;
+      // bleed2.layers.enable(2);
+
+      scene.add(ball);
+    }
+
+    for (let i = 0; i < 2; i++) {
+      const ball = new Ball(
+        scene,
+        renderer,
+        Math.random() * (15 - 3) + 3,
+        0x45ff5a
+      ).children[0];
+      ball.position.set(
+        500 - Math.random() * 1000, // X座標
+        300 - Math.random() * 600, // Y座標
+        300 - Math.random() * 400 // Z座標
+      );
+
+      // bleed2.visible = false;
+      // cubeCamera.position.copy(bleed2.position);
+      // cubeCamera.update(renderer, scene);
+
+      // Render the scene
+      ball.visible = true;
+      // bleed2.layers.enable(2);
+
+      scene.add(ball);
+    }
+
+    const ball2 = new Ball(scene, renderer, 12, 0x032f08).children[0];
+    ball2.position.set(
+      -90, // X座標
+      -60, // Y座標
+      5 // Z座標
+    );
+
+    // bleed2.visible = false;
+    // cubeCamera.position.copy(bleed2.position);
+    // cubeCamera.update(renderer, scene);
+
+    // Render the scene
+    ball2.visible = true;
+    // bleed2.layers.enable(2);
+
+    scene.add(ball2);
+
+    const ball3 = new Ball(scene, renderer, 7, 0x032f08).children[0];
+    ball3.position.set(
+      -120, // X座標
+      5, // Y座標
+      2 // Z座標
+    );
+
+    // bleed2.visible = false;
+    // cubeCamera.position.copy(bleed2.position);
+    // cubeCamera.update(renderer, scene);
+
+    // Render the scene
+    ball3.visible = true;
+    // bleed2.layers.enable(2);
+
+    scene.add(ball3);
   }
 }
 
@@ -78,7 +214,8 @@ class Ball extends Group {
     scene: Scene,
     renderer: WebGLRenderer,
     // texture: Texture,
-    size: number
+    size: number,
+    color: ColorRepresentation
   ) {
     super();
 
@@ -102,7 +239,7 @@ class Ball extends Group {
     // });
 
     const material3 = new MeshPhysicalMaterial({
-      color: 0xd9f3ff,
+      color: color,
       // envMap: texture,
       reflectivity: 1, //反射率
       // opacity: 0.2, //不透明度で反射具合を調整
@@ -144,7 +281,7 @@ class Ball extends Group {
 
     // const canvasTexture = generatePetalTexture();
     // const latheGeometry = new LatheGeometry(points, 50, 0, 1 * Math.PI);
-    const geometry = new IcosahedronGeometry(Math.random() * (17 - 3) + 3, 3);
+    const geometry = new IcosahedronGeometry(size, 3);
     // const wireFrameMat = new MeshPhysicalMaterial({
     //   color: 0xf54c71,
     //   opacity: 1,
