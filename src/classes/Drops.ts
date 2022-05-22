@@ -36,7 +36,7 @@ import { createMultiMaterialObject } from "three/examples/jsm/utils/SceneUtils.j
 // import { generatePetalTexture, generateLeafTexture } from "../jsm/MakeTexture";
 
 // 滲み
-export class Bleeding extends Group {
+export class Drops extends Group {
   // petal: Mesh;
 
   constructor(
@@ -53,7 +53,7 @@ export class Bleeding extends Group {
     // cubeCamera.renderTarget.texture.minFilter = LinearMipMapLinearFilter;
     // scene.add(cubeCamera);
 
-    const bleed = new Bleed(scene, renderer, cubeRenderTarget.texture, 3)
+    const bleed = new Drop(scene, renderer, cubeRenderTarget.texture, 3)
       .children[0];
     bleed.position.set(
       -108, // X座標
@@ -74,7 +74,7 @@ export class Bleeding extends Group {
     // bleed.layers.enable(1);
     scene.add(bleed);
 
-    const bleed2 = new Bleed(scene, renderer, cubeRenderTarget.texture, 2)
+    const bleed2 = new Drop(scene, renderer, cubeRenderTarget.texture, 2)
       .children[0];
     bleed2.position.set(
       -102, // X座標
@@ -96,7 +96,7 @@ export class Bleeding extends Group {
   }
 }
 
-class Bleed extends Group {
+class Drop extends Group {
   constructor(
     scene: Scene,
     renderer: WebGLRenderer,

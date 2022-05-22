@@ -3,7 +3,7 @@ import { MakeScene } from "../classes/MakeScene";
 import { MakeLight } from "../classes/MakeLight";
 import { MakeCamera } from "../classes/MakeCamera";
 import { Flower } from "../classes/Flower";
-import { Bleeding } from "../classes/Bleeding";
+import { Drops } from "../classes/Drops";
 import { BleedingBalls } from "../classes/BleedingBalls";
 import {
   WebGLRenderer,
@@ -100,7 +100,7 @@ function DrawCanvas(): JSX.Element {
     light.setAmbientLight();
     light.setDirectionalLight();
 
-    const bleeding = new Bleeding(scene, renderer);
+    const bleeding = new Drops(scene, renderer);
     scene.add(bleeding);
 
     const bleedingBalls = new BleedingBalls(scene, renderer);
