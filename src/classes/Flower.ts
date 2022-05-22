@@ -2,10 +2,7 @@ import {
   Object3D,
   Mesh,
   Scene,
-  // Color,
   SphereGeometry,
-  BoxGeometry,
-  BufferGeometry,
   CylinderGeometry,
   MeshNormalMaterial,
   MeshStandardMaterial,
@@ -15,7 +12,6 @@ import {
   LatheGeometry,
   DoubleSide,
   MeshBasicMaterial,
-  Layers,
   CanvasTexture,
 } from "three";
 
@@ -23,13 +19,7 @@ import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js"
 import { createMultiMaterialObject } from "three/examples/jsm/utils/SceneUtils.js";
 
 export class Flower extends Object3D {
-  // flower: Object3D;
-  constructor(
-    scene: Scene,
-    position: number,
-    // bloomLayer: Layers,
-    petalTexture: CanvasTexture
-  ) {
+  constructor(scene: Scene, position: number, petalTexture: CanvasTexture) {
     super();
     const petals: Petals = new Petals(petalTexture);
     this.add(petals);
@@ -37,13 +27,10 @@ export class Flower extends Object3D {
 
     const stem = new Stem();
     stem.position.y = -5;
-    // stem.castShadow = true;
-    // stem.receiveShadow = true;
     this.add(stem);
     this.rotation.x = 0.4;
     this.position.x = position;
 
-    this.layers.enable(0);
     scene.add(this);
 
     const leaves = this.makeLeaf();
@@ -73,8 +60,6 @@ export class Flower extends Object3D {
     }
     return leaves;
   }
-
-  // get() {}
 }
 
 // 花弁(花びらの集まり)
@@ -107,7 +92,6 @@ class Petals extends Group {
 
 // 花びら
 class Petal extends Group {
-  // petal: Mesh;
   constructor(petalTexture: CanvasTexture) {
     super();
 
@@ -142,32 +126,20 @@ class Petal extends Group {
 
     meshMaterial.side = DoubleSide;
     const wireFrameMat = new MeshStandardMaterial({
-      // color: 0xff0000,
-      // transparent: true,
       map: petalTexture,
     });
-
-    // wireFrameMat.side = DoubleSide;
-
-    // wireFrameMat.map = canvasTexture;
-    // wireFrameMat.map.needsUpdate = true;
-    // const wireFrameMat = new MeshBasicMaterial();
-    // wireFrameMat.wireframe = true;
 
     const mesh = createMultiMaterialObject(latheGeometry, [
       meshMaterial,
       wireFrameMat,
     ]);
 
-    // mesh.castShadow = true;
-    // mesh.receiveShadow = true;
     this.add(mesh);
   }
 }
 
 // 茎
 class Stem extends Mesh {
-  // petal: Mesh;
   constructor() {
     const geometry = new CylinderGeometry(8, 8, 250, 50);
 
@@ -179,7 +151,6 @@ class Stem extends Mesh {
 }
 
 class Leaf extends Mesh {
-  // petal: Mesh;
   constructor() {
     super();
 
@@ -204,7 +175,6 @@ class Leaf extends Mesh {
 
     const spGroup = new Group();
     const material = new MeshBasicMaterial({
-      // color: 0x02520b,
       transparent: false,
     });
     points.forEach(function (point, index) {
@@ -212,8 +182,6 @@ class Leaf extends Mesh {
       const spMesh = new Mesh(spGeom, material);
 
       spMesh.position.set(point.x, point.y, 0);
-      spMesh.layers.disable(0);
-      spMesh.layers.enable(1);
       spGroup.add(spMesh);
     });
     this.add(spGroup);
@@ -222,28 +190,18 @@ class Leaf extends Mesh {
     const meshMaterial = new MeshBasicMaterial({
       color: 0x02520b,
     });
-    // meshMaterial.transparent = true;
-    // meshMaterial.opacity = 0.2;
 
     meshMaterial.side = DoubleSide;
 
-    // const canvasTexture = generateLeafTexture();
     const wireFrameMat = new MeshStandardMaterial({
       color: 0x02520b,
-      // map: canvasTexture,
     });
-    // const wireFrameMat = new MeshBasicMaterial();
-    // wireFrameMat.wireframe = true;
 
     const mesh = createMultiMaterialObject(hullGeometry, [
       meshMaterial,
       wireFrameMat,
     ]);
 
-    mesh.layers.set(1);
-    // mesh.layers.enable(1);
-    // mesh.castShadow = true;
-    // mesh.receiveShadow = true;
     this.add(mesh);
   }
 }

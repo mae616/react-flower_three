@@ -1,4 +1,4 @@
-import { Scene, Color, TextureLoader } from "three";
+import { Scene, TextureLoader } from "three";
 
 export class MakeScene {
   scene: Scene;

@@ -1,57 +1,18 @@
-import { SendHandle } from "child_process";
 import {
   Scene,
-  CubeCamera,
-  Object3D,
   Mesh,
-  // Scene,
-  // Color,
-  SphereGeometry,
-  BoxGeometry,
-  BufferGeometry,
-  CylinderGeometry,
-  MeshNormalMaterial,
-  MeshStandardMaterial,
-  CubeRefractionMapping,
   IcosahedronGeometry,
   WebGLRenderer,
-  LinearMipmapLinearFilter,
-  WebGLCubeRenderTarget,
-  LinearMipMapLinearFilter,
-  MeshLambertMaterial,
   Group,
-  Vector2,
-  Vector3,
   MeshPhysicalMaterial,
-  LatheGeometry,
   DoubleSide,
-  MeshBasicMaterial,
-  Texture,
-  Layers,
   ColorRepresentation,
 } from "three";
 
-import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js";
-import { createMultiMaterialObject } from "three/examples/jsm/utils/SceneUtils.js";
-
-// import { generatePetalTexture, generateLeafTexture } from "../jsm/MakeTexture";
-
 // 滲み
 export class BleedingBalls extends Group {
-  // petal: Mesh;
-
-  constructor(
-    scene: Scene,
-    renderer: WebGLRenderer //bloomLayer: Layers
-  ) {
+  constructor(scene: Scene, renderer: WebGLRenderer) {
     super();
-    // const cubeRenderTarget = new WebGLCubeRenderTarget(128, {
-    //   generateMipmaps: true,
-    //   minFilter: LinearMipmapLinearFilter,
-    // });
-    // const cubeCamera = new CubeCamera(1, 1000, cubeRenderTarget);
-    // cubeCamera.renderTarget.texture.minFilter = LinearMipMapLinearFilter;
-    // scene.add(cubeCamera);
     const color: ColorRepresentation[] = [0xd9f3ff, 0x97ddfc, 0x3bc3ff];
     for (let i = 0; i < 25; i++) {
       const ball = new BleedingBall(
@@ -66,13 +27,7 @@ export class BleedingBalls extends Group {
         300 - Math.random() * 400 // Z座標
       );
 
-      // bleed2.visible = false;
-      // cubeCamera.position.copy(bleed2.position);
-      // cubeCamera.update(renderer, scene);
-
-      // Render the scene
       ball.visible = true;
-      // bleed2.layers.enable(2);
 
       scene.add(ball);
     }
@@ -90,13 +45,7 @@ export class BleedingBalls extends Group {
         300 - Math.random() * 400 // Z座標
       );
 
-      // bleed2.visible = false;
-      // cubeCamera.position.copy(bleed2.position);
-      // cubeCamera.update(renderer, scene);
-
-      // Render the scene
       ball.visible = true;
-      // bleed2.layers.enable(2);
 
       scene.add(ball);
     }
@@ -114,13 +63,7 @@ export class BleedingBalls extends Group {
         300 - Math.random() * 400 // Z座標
       );
 
-      // bleed2.visible = false;
-      // cubeCamera.position.copy(bleed2.position);
-      // cubeCamera.update(renderer, scene);
-
-      // Render the scene
       ball.visible = true;
-      // bleed2.layers.enable(2);
 
       scene.add(ball);
     }
@@ -138,13 +81,7 @@ export class BleedingBalls extends Group {
         300 - Math.random() * 400 // Z座標
       );
 
-      // bleed2.visible = false;
-      // cubeCamera.position.copy(bleed2.position);
-      // cubeCamera.update(renderer, scene);
-
-      // Render the scene
       ball.visible = true;
-      // bleed2.layers.enable(2);
 
       scene.add(ball);
     }
@@ -162,13 +99,7 @@ export class BleedingBalls extends Group {
         300 - Math.random() * 400 // Z座標
       );
 
-      // bleed2.visible = false;
-      // cubeCamera.position.copy(bleed2.position);
-      // cubeCamera.update(renderer, scene);
-
-      // Render the scene
       ball.visible = true;
-      // bleed2.layers.enable(2);
 
       scene.add(ball);
     }
@@ -180,13 +111,7 @@ export class BleedingBalls extends Group {
       5 // Z座標
     );
 
-    // bleed2.visible = false;
-    // cubeCamera.position.copy(bleed2.position);
-    // cubeCamera.update(renderer, scene);
-
-    // Render the scene
     ball2.visible = true;
-    // bleed2.layers.enable(2);
 
     scene.add(ball2);
 
@@ -197,13 +122,7 @@ export class BleedingBalls extends Group {
       2 // Z座標
     );
 
-    // bleed2.visible = false;
-    // cubeCamera.position.copy(bleed2.position);
-    // cubeCamera.update(renderer, scene);
-
-    // Render the scene
     ball3.visible = true;
-    // bleed2.layers.enable(2);
 
     scene.add(ball3);
   }
