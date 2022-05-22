@@ -3,4 +3,4 @@ export { MakeLight } from "./MakeLight";
 export { MakeCamera } from "./MakeCamera";
 export { Flower } from "./Flower";
 export { Drops } from "./Drops";
-export { BleedingBalls } from "./BleedingBalls";
+export { BleedingBall } from "./BleedingBall";
