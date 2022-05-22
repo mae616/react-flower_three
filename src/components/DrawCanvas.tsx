@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
-import { MakeScene } from "../classes/MakeScene";
-import { MakeLight } from "../classes/MakeLight";
-import { MakeCamera } from "../classes/MakeCamera";
-import { Flower } from "../classes/Flower";
-import { Drops } from "../classes/Drops";
-import { BleedingBalls } from "../classes/BleedingBalls";
+import { MakeScene } from "../ts/classes/MakeScene";
+import { MakeLight } from "../ts/classes/MakeLight";
+import { MakeCamera } from "../ts/classes/MakeCamera";
+import { Flower } from "../ts/classes/Flower";
+import { Drops } from "../ts/classes/Drops";
+import { BleedingBalls } from "../ts/classes/BleedingBalls";
 import { WebGLRenderer, CanvasTexture } from "three";
 
 import { HalftonePass } from "three/examples/jsm/postprocessing/HalftonePass";
@@ -17,7 +17,7 @@ import {
   generatePetalTexture_red,
   generatePetalTexture_yellow,
   generatePetalTexture_blue,
-} from "../jsm/MakeTexture";
+} from "../ts/modules/generateTexture";
 
 function DrawCanvas(): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
