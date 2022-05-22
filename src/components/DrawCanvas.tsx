@@ -5,6 +5,8 @@ import { MakeCamera } from "../ts/classes/MakeCamera";
 import { Flower } from "../ts/classes/Flower";
 import { Drops } from "../ts/classes/Drops";
 import { BleedingBalls } from "../ts/classes/BleedingBalls";
+import type { PetalColor } from "../ts/modules/type";
+
 import { WebGLRenderer, CanvasTexture } from "three";
 
 import { HalftonePass } from "three/examples/jsm/postprocessing/HalftonePass";
@@ -13,11 +15,7 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { FilmPass } from "three/examples/jsm/postprocessing/FilmPass";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 
-import {
-  generatePetalTexture_red,
-  generatePetalTexture_yellow,
-  generatePetalTexture_blue,
-} from "../ts/modules/generateTexture";
+import { generatePetalTexture } from "../ts/modules/generateTexture";
 
 function DrawCanvas(): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -36,13 +34,13 @@ function DrawCanvas(): JSX.Element {
     const camera = new MakeCamera(castedCanvasElement).get();
 
     const flowers: Flower[] = [];
-    const texture: CanvasTexture[] = [
-      generatePetalTexture_yellow(),
-      generatePetalTexture_red(),
-      generatePetalTexture_blue(),
-    ];
+    const petalColor: PetalColor[] = ["yellow", "red", "blue"];
     for (let i = -1; i < 2; i++) {
-      const flower = new Flower(scene, i * 300, texture[i + 1]);
+      const petalTexture: CanvasTexture = generatePetalTexture(
+        petalColor[i + 1]
+      );
+
+      const flower = new Flower(scene, i * 300, petalTexture);
 
       scene.add(flower);
       flowers.push(flower);
