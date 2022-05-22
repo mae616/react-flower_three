@@ -37,7 +37,7 @@ import { createMultiMaterialObject } from "three/examples/jsm/utils/SceneUtils.j
 // import { generatePetalTexture, generateLeafTexture } from "../jsm/MakeTexture";
 
 // 滲み
-export class Balls extends Group {
+export class BleedingBalls extends Group {
   // petal: Mesh;
 
   constructor(
@@ -54,7 +54,7 @@ export class Balls extends Group {
     // scene.add(cubeCamera);
     const color: ColorRepresentation[] = [0xd9f3ff, 0x97ddfc, 0x3bc3ff];
     for (let i = 0; i < 25; i++) {
-      const ball = new Ball(
+      const ball = new BleedingBall(
         scene,
         renderer,
         Math.random() * (17 - 3) + 3,
@@ -78,7 +78,7 @@ export class Balls extends Group {
     }
 
     for (let i = 0; i < 5; i++) {
-      const ball = new Ball(
+      const ball = new BleedingBall(
         scene,
         renderer,
         Math.random() * (15 - 3) + 3,
@@ -102,7 +102,7 @@ export class Balls extends Group {
     }
 
     for (let i = 0; i < 3; i++) {
-      const ball = new Ball(
+      const ball = new BleedingBall(
         scene,
         renderer,
         Math.random() * (15 - 3) + 3,
@@ -126,7 +126,7 @@ export class Balls extends Group {
     }
 
     for (let i = 0; i < 3; i++) {
-      const ball = new Ball(
+      const ball = new BleedingBall(
         scene,
         renderer,
         Math.random() * (15 - 3) + 3,
@@ -150,7 +150,7 @@ export class Balls extends Group {
     }
 
     for (let i = 0; i < 2; i++) {
-      const ball = new Ball(
+      const ball = new BleedingBall(
         scene,
         renderer,
         Math.random() * (15 - 3) + 3,
@@ -173,7 +173,7 @@ export class Balls extends Group {
       scene.add(ball);
     }
 
-    const ball2 = new Ball(scene, renderer, 12, 0x032f08).children[0];
+    const ball2 = new BleedingBall(scene, renderer, 12, 0x032f08).children[0];
     ball2.position.set(
       -90, // X座標
       -60, // Y座標
@@ -190,7 +190,7 @@ export class Balls extends Group {
 
     scene.add(ball2);
 
-    const ball3 = new Ball(scene, renderer, 7, 0x032f08).children[0];
+    const ball3 = new BleedingBall(scene, renderer, 7, 0x032f08).children[0];
     ball3.position.set(
       -120, // X座標
       5, // Y座標
@@ -209,7 +209,7 @@ export class Balls extends Group {
   }
 }
 
-class Ball extends Group {
+class BleedingBall extends Group {
   constructor(
     scene: Scene,
     renderer: WebGLRenderer,

@@ -4,7 +4,7 @@ import { MakeLight } from "../classes/MakeLight";
 import { MakeCamera } from "../classes/MakeCamera";
 import { Flower } from "../classes/Flower";
 import { Bleeding } from "../classes/Bleeding";
-import { Balls } from "../classes/Balls";
+import { BleedingBalls } from "../classes/BleedingBalls";
 import {
   WebGLRenderer,
   // Mesh,
@@ -103,8 +103,8 @@ function DrawCanvas(): JSX.Element {
     const bleeding = new Bleeding(scene, renderer);
     scene.add(bleeding);
 
-    const balls = new Balls(scene, renderer);
-    scene.add(balls);
+    const bleedingBalls = new BleedingBalls(scene, renderer);
+    scene.add(bleedingBalls);
 
     // const renderPass = new RenderPass(scene, camera);
     // const params = {
