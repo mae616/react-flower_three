@@ -8,3 +8,10 @@ export type BallInfo = {
   y?: number;
   z?: number;
 }[];
+
+export type DropInfo = {
+  size: number;
+  x: number;
+  y: number;
+  z: number;
+}[];

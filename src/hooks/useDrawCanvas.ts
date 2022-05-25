@@ -7,11 +7,13 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { FilmPass } from "three/examples/jsm/postprocessing/FilmPass";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 
-import { MakeScene, MakeLight, MakeCamera, Flower, Drops } from "../ts/classes";
+import { MakeScene, MakeLight, MakeCamera, Flower } from "../ts/classes";
 import {
   generatePetalTexture,
   generateBleedingBalls,
   getBleedingBallsInfo,
+  generateDrops,
+  getDropsInfo,
 } from "../ts/modules";
 import type { PetalColor } from "../ts/modules/type";
 
@@ -48,7 +50,9 @@ export function useDrawCanvas() {
     light.setAmbientLight();
     light.setDirectionalLight();
 
-    const drops = new Drops(scene, renderer);
+    // 水滴
+    const dropsInfo = getDropsInfo();
+    const drops = generateDrops(dropsInfo);
     scene.add(drops);
 
     // 滲み
