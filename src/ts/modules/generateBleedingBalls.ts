@@ -1,14 +1,14 @@
-import { ColorRepresentation, Group } from "three";
+import { Group } from "three";
 
 import { BleedingBall } from "../classes";
-import type { BallInfo } from "../modules/type";
+import type { BallsInfo } from "../modules/type";
 
 // 滲み
-function generateBleedingBalls(ballInfo: BallInfo): Group {
+function generateBleedingBalls(ballsInfo: BallsInfo): Group {
   const balls = new Group();
 
-  for (let i = 0; i < ballInfo.length; i++) {
-    const { colors, count, maxSize, x, y, z } = ballInfo[i];
+  for (let i = 0; i < ballsInfo.length; i++) {
+    const { colors, count, maxSize, x, y, z } = ballsInfo[i];
 
     for (let j = 0; j < count; j++) {
       const ball = new BleedingBall(
@@ -32,7 +32,7 @@ function generateBleedingBalls(ballInfo: BallInfo): Group {
   return balls;
 }
 
-function getBleedingBallsInfo(): BallInfo {
+function getBleedingBallsInfo(): BallsInfo {
   return [
     {
       colors: [0xd9f3ff, 0x97ddfc, 0x3bc3ff],

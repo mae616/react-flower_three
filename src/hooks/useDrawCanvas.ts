@@ -14,6 +14,8 @@ import {
   getBleedingBallsInfo,
   generateDrops,
   getDropsInfo,
+  generateFlowers,
+  getPetalColors,
 } from "../ts/modules";
 import type { PetalColor } from "../ts/modules/type";
 
@@ -33,18 +35,10 @@ export function useDrawCanvas() {
     // カメラを作成
     const camera = new MakeCamera(castedCanvasElement).get();
 
-    const flowers: Flower[] = [];
-    const petalColor: PetalColor[] = ["yellow", "red", "blue"];
-    for (let i = -1; i < 2; i++) {
-      const petalTexture: CanvasTexture = generatePetalTexture(
-        petalColor[i + 1]
-      );
-
-      const flower = new Flower(scene, i * 300, petalTexture);
-
-      scene.add(flower);
-      flowers.push(flower);
-    }
+    // 花を作成
+    const petalColors = getPetalColors();
+    const flowers = generateFlowers(petalColors);
+    scene.add(flowers);
 
     const light = new MakeLight(scene);
     light.setAmbientLight();

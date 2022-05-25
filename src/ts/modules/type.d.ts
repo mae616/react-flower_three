@@ -1,6 +1,6 @@
 export type PetalColor = "red" | "blue" | "yellow";
 
-export type BallInfo = {
+export type BallsInfo = {
   colors: ColorRepresentation[];
   count: number;
   maxSize: number;
@@ -9,9 +9,11 @@ export type BallInfo = {
   z?: number;
 }[];
 
-export type DropInfo = {
+export type DropsInfo = {
   size: number;
   x: number;
   y: number;
   z: number;
 }[];
+
+export type PetalColors = PetalColor[];

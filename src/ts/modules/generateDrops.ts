@@ -1,21 +1,17 @@
 import { Group } from "three";
 
 import { Drop } from "../classes";
-import type { DropInfo } from "./type";
+import type { DropsInfo } from "./type";
 
 // 水滴
-function generateDrops(dropInfo: DropInfo): Group {
+function generateDrops(dropsInfo: DropsInfo): Group {
   const drops = new Group();
 
-  for (let i = 0; i < dropInfo.length; i++) {
-    const { size, x, y, z } = dropInfo[i];
+  for (let i = 0; i < dropsInfo.length; i++) {
+    const { size, x, y, z } = dropsInfo[i];
 
     const drop = new Drop(size);
     drop.position.set(x, y, z);
-
-    // const radian = (1 / 6) * Math.PI * 2;
-    // bleed.rotation.y = -radian;
-    // bleed.rotation.z += -0.3;
 
     drop.visible = true;
     drops.add(drop);
@@ -24,7 +20,7 @@ function generateDrops(dropInfo: DropInfo): Group {
   return drops;
 }
 
-function getDropsInfo(): DropInfo {
+function getDropsInfo(): DropsInfo {
   return [
     { size: 3, x: -108, y: 3, z: 3 },
     { size: 2, x: -102, y: -3, z: -2 },

@@ -1,7 +1,5 @@
 import {
-  Object3D,
   Mesh,
-  Scene,
   SphereGeometry,
   CylinderGeometry,
   MeshNormalMaterial,
@@ -18,32 +16,25 @@ import {
 import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js";
 import { createMultiMaterialObject } from "three/examples/jsm/utils/SceneUtils.js";
 
-export class Flower extends Object3D {
-  constructor(scene: Scene, position: number, petalTexture: CanvasTexture) {
+export class Flower extends Group {
+  constructor(petalTexture: CanvasTexture) {
     super();
     const petals: Petals = new Petals(petalTexture);
-    this.add(petals);
     petals.rotation.y = -0.5;
+    this.add(petals);
 
     const stem = new Stem();
     stem.position.y = -5;
     this.add(stem);
-    this.rotation.x = 0.4;
-    this.position.x = position;
-
-    scene.add(this);
 
     const leaves = this.makeLeaf();
-    leaves.rotation.x = 0.4;
-    leaves.position.x = position;
-    scene.add(leaves);
+    this.add(leaves);
   }
 
   private makeLeaf(): Group {
     const leaves = new Group();
     const length = 2;
     for (let i = 0; i < length; i++) {
-      // 直方体を作成
       const leaf = new Leaf();
 
       // 配置座標を計算
@@ -51,11 +42,11 @@ export class Flower extends Object3D {
       leaf.position.set(
         -120 * Math.cos(radian), // X座標
         20, // Y座標
-        60 * Math.sin(radian) // Z座標
+        120 * Math.sin(radian) // Z座標
       );
-      leaf.rotation.y = -radian;
+      leaf.rotation.y = radian;
       leaf.rotation.z += -1.8;
-      // グループに追加する
+
       leaves.add(leaf);
     }
     return leaves;
@@ -64,7 +55,6 @@ export class Flower extends Object3D {
 
 // 花弁(花びらの集まり)
 class Petals extends Group {
-  petals: Petal[] = [];
   constructor(petalTexture: CanvasTexture) {
     super();
 
@@ -85,7 +75,6 @@ class Petals extends Group {
 
       // グループに追加する
       this.add(petal);
-      this.petals.push(petal);
     }
   }
 }
@@ -145,7 +134,6 @@ class Stem extends Mesh {
 
     const material = new MeshStandardMaterial({ color: 0x017a0f });
 
-    // 継承元のコンストラクターを実行
     super(geometry, material);
   }
 }
@@ -187,20 +175,13 @@ class Leaf extends Mesh {
     this.add(spGroup);
 
     const hullGeometry = new ConvexGeometry(points);
-    const meshMaterial = new MeshBasicMaterial({
+    const meshMaterial = new MeshStandardMaterial({
       color: 0x02520b,
     });
 
     meshMaterial.side = DoubleSide;
 
-    const wireFrameMat = new MeshStandardMaterial({
-      color: 0x02520b,
-    });
-
-    const mesh = createMultiMaterialObject(hullGeometry, [
-      meshMaterial,
-      wireFrameMat,
-    ]);
+    const mesh = new Mesh(hullGeometry, meshMaterial);
 
     this.add(mesh);
   }
